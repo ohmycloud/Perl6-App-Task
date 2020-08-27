@@ -2,6 +2,15 @@ Revision history for App-Tasks
 
 {{$NEXT}}
 
+0.0.17  2020-01-18T23:56:03Z
+    - Rename Git Hub repo to reflect language name
+
+0.0.16  2019-08-31T20:50:19-06:00
+    - Enhance input checking for task list
+
+0.0.15  2019-04-28T13:14:39-06:00
+    - [refactor] Adopt new P5localtime interface
+
 0.0.14  2018-11-27T09:56:51-07:00
     - [BUGFIX] Closing or adding a note to a non-existent task now gives
       a more friendly error message without a stack trace.

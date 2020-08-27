@@ -4,7 +4,7 @@
 #
 use v6.c;
 
-class App::Tasks:ver<0.0.14>:auth<cpan:JMASLAK> {
+class App::Tasks:ver<0.0.17>:auth<cpan:JMASLAK> {
     use App::Tasks::Config;
     use App::Tasks::Lock;
     use App::Tasks::Task;
@@ -461,7 +461,7 @@ class App::Tasks:ver<0.0.14>:auth<cpan:JMASLAK> {
     }
 
     multi method sprint-header-line(Str:D $header, DateTime:D $value) {
-        return self.sprint-header-line: $header, localtime($value.posix, :scalar);
+        return self.sprint-header-line: $header, localtime(Scalar, $value.posix);
     }
 
     multi method sprint-header-line(Str:D $header, Int:D $value) {
@@ -474,7 +474,7 @@ class App::Tasks:ver<0.0.14>:auth<cpan:JMASLAK> {
 
     method sprint-body(App::Tasks::TaskBody $body) {
         my $out = $.config.header-alert-color ~ "["
-            ~ localtime($body.date.posix, :scalar) ~ "]"
+            ~ localtime(Scalar, $body.date.posix) ~ "]"
             ~ $.config.header-seperator-color ~ ':'
             ~ $.config.reset ~ "\n";
 
@@ -1066,7 +1066,7 @@ class App::Tasks:ver<0.0.14>:auth<cpan:JMASLAK> {
         return @out.join();
     }
 
-    method task-list(
+    multi method task-list(
         Int $num? where { !$num.defined or $num > 0 },
         Bool :$show-immature? is copy = False,
         Bool :$all = True,
@@ -1086,6 +1086,7 @@ class App::Tasks:ver<0.0.14>:auth<cpan:JMASLAK> {
 
         return self.display-with-pager( "Tasklist", $out );
     }
+    multi method task-list( +@ ) { die "Invalid arguments" }
 
     method task-monitor(
         Bool :$show-immature? = False,
@@ -1127,7 +1128,7 @@ class App::Tasks:ver<0.0.14>:auth<cpan:JMASLAK> {
             self.update-task-log();    # So we know we've done this.
         }
 
-        my $out = localtime(:scalar) ~ ' local / ' ~ gmtime(:scalar) ~ " UTC\n\n";
+        my $out = localtime(Scalar) ~ ' local / ' ~ gmtime(Scalar) ~ " UTC\n\n";
 
         $out ~= self.generate-task-list(
             $rows - 3,
